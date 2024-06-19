@@ -3,6 +3,7 @@ import Filter from './Filter'
 
 function HomePage() {
     const [boards, setBoards] = useState([]);
+    const [CategoryFilter, setCategoryFilter] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -19,21 +20,49 @@ function HomePage() {
 
     const renderBoards = () => {
         let filteredBoards = boards;
+
+        if (CategoryFilter) {
+            filteredBoards = filteredBoards.filter(
+              (board) => board.type == CategoryFilter
+            );
+        }
     
         return filteredBoards.map((board) => (
           <div key={board.id} className="board-preview">
-            <img
-              src={`https://picsum.photos/id/${board.id + 10}/200/300`}
-              alt={board.name}
-            />
+            <img src={`https://picsum.photos/id/${board.id + 10}/200/300`} alt={board.name}/>
             <h3>{board.name}</h3>
-            <p>{board.category}</p>
+            <p>{board.type}</p>
             <button className="button-common delete-board" onClick={() => deleteBoard(board.id)}>
               Delete Board
             </button>
           </div>
         ));
     };
+
+    const deleteBoard = async (boardId) => {
+        try {
+          const response = await fetch(`http://localhost:3000/boards/${boardId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+    
+          if (response.ok) {
+            setBoards((prevBoards) =>
+              prevBoards.filter((board) => board.board_id !== boardId)
+            );
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+    };
+
+    
+
+    
+
+    // --------------------------------------------------------------------------------------------------------
 
     return(
         <div>
@@ -46,7 +75,7 @@ function HomePage() {
 
             </header>
 
-            <Filter />
+            <Filter setCategoryFilter={setCategoryFilter} />
 
             <section className="board-grid">{renderBoards()}</section>
         </div>

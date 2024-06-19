@@ -17,4 +17,5 @@ model Board {
   id    Int     @id @default(autoincrement())
   name  String
   type  String
+  date  DateTime  @default(now())
 }

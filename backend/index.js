@@ -3,16 +3,17 @@ const express = require('express')
 const app = express()
 const PORT = 3000
 
-
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
 
 // Enable CORS for all routes
 app.use(cors())
 
-let boards = [
-    { id: 1, name: "board1", type: "Celebration"},
-    { id: 2, name: "board2", type: "Celebration"}
-]
+// let boards = [
+//     { id: 1, name: "board1", type: "Celebration"},
+//     { id: 2, name: "board2", type: "Celebration"}
+// ]
 
 app.use(express.json())
 
@@ -20,8 +21,9 @@ app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
 })
 
-app.get('/boards', (req, res) => {
-    res.json(boards)
+app.get('/boards', async (req, res) => {
+  const boards = await prisma.board.findMany()
+  res.json(boards)
 })
 
 app.get('/boards/:boardId', (req, res) => {
@@ -35,43 +37,43 @@ app.get('/boards/:boardId', (req, res) => {
     }
 })
 
-app.post('/boards', (req, res) => {
-    const { name, type } = req.body
-  
-    const newEvent = {
-      id: boards.length + 1,
+
+
+app.post('/boards', async (req, res) => {
+  const { name, type, date } = req.body
+  const newboard = await prisma.board.create({
+    data: {
       name,
-      type
+      type,
+      date
     }
-  
-    boards.push(newEvent)
-    res.status(201).json(newEvent)
+  })
+  res.json(newboard)
 })
 
-app.put('/boards/:boardId', (req, res) => {
-    const { boardId } = req.params
-    const boardIndex = boards.findIndex(board => board.id === parseInt(boardId))
-  
-    if (boardIndex !== -1) {
-      const updatedBoardInfo = req.body
-      boards[boardIndex] = { ...boards[boardIndex], ...updatedBoardInfo }
-      res.json(boards[boardIndex])
-    } else {
-      res.status(404).send('Board not found')
+app.put('/boards/:id', async (req, res) => {
+  const { id } = req.params
+  const { name, type, date } = req.body
+  const updatedboard = await prisma.board.update({
+    where: { id: parseInt(id) },
+    data: {
+      name,
+      type,
+      date
     }
+  })
+  res.json(updatedboard)
 })
 
-app.delete('/boards/:boardId', (req, res) => {
-    const { boardId } = req.params
-    const initialLength = boards.length
-    boards = boards.filter(board => board.id !== parseInt(boardId))
-  
-    if (boards.length < initialLength) {
-      res.status(204).send()
-    } else {
-      res.status(404).send('board not found')
-    }
+app.delete('/boards/:id', async (req, res) => {
+  const { id } = req.params
+  const deletedboard = await prisma.board.delete({
+    where: { id: parseInt(id) }
+  })
+  res.json(deletedboard)
 })
+
+
 
 
 app.get('/', (req, res) => {
