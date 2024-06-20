@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Filter from './Filter'
+import axios from "axios";
+import HandleNewBoard from './HandleNewBoard'
 
 function HomePage() {
     const [boards, setBoards] = useState([]);
     const [CategoryFilter, setCategoryFilter] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    const [Form, setForm] = useState(false);
 
     useEffect(() => {
         fetchBoards();
@@ -14,8 +17,9 @@ function HomePage() {
         fetch('http://localhost:3000/boards')
             .then(response => response.json())
             .then(data => setBoards(data))
-            .catch(error => console.error('Error fetching posts:', error))
+            .catch(error => console.error('Error fetching:', error))
     }
+    
 
 
     const renderBoards = () => {
@@ -58,6 +62,15 @@ function HomePage() {
         }
     };
 
+    const createBoard = () => {
+        fetchBoards();
+        setForm(false);
+    };
+
+    const toggleForm = () => {
+        setForm(!Form);
+    };
+
     
 
     
@@ -76,6 +89,14 @@ function HomePage() {
             </header>
 
             <Filter setCategoryFilter={setCategoryFilter} />
+
+
+            <div>
+                <button onClick={toggleForm}>
+                    Create a New Board
+                </button>
+                {Form && (<HandleNewBoard onSuccess={createBoard} onClose={toggleForm} />)}
+            </div>            
 
             <section className="board-grid">{renderBoards()}</section>
         </div>
