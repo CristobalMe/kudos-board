@@ -25,6 +25,12 @@ function HomePage() {
     const renderBoards = () => {
         let filteredBoards = boards;
 
+        if (searchQuery) {
+            filteredBoards = filteredBoards.filter((board) =>
+              board.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+        }
+
         if (CategoryFilter) {
             filteredBoards = filteredBoards.filter(
               (board) => board.type == CategoryFilter
@@ -32,11 +38,11 @@ function HomePage() {
         }
     
         return filteredBoards.map((board) => (
-          <div key={board.id} className="board-preview">
+          <div key={board.id} className="board">
             <img src={`https://picsum.photos/id/${board.id + 10}/200/300`} alt={board.name}/>
             <h3>{board.name}</h3>
             <p>{board.type}</p>
-            <button className="button-common delete-board" onClick={() => deleteBoard(board.id)}>
+            <button className="delete-board" onClick={() => deleteBoard(board.id)}>
               Delete Board
             </button>
           </div>
@@ -82,8 +88,9 @@ function HomePage() {
             <header className='App-header'>
                 <h2 className='Title'>KudoBoard</h2>
 
+                
                 <div className="topnav">
-                    <input type="text" placeholder="Search.." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                    <input type="text" placeholder="Search" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                 </div>
 
             </header>
