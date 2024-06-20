@@ -23,18 +23,20 @@ app.get('/boards', async (req, res) => {
 })
 
 app.get('/boards/:boardId', async (req, res) => {
-    const boardId = parseInt(req.params.boardId)
-    const boards = await prisma.board.findMany()
-    const board = boards.find(board => board.id === boardId)
-    
-    if (board) {
-      res.json(board)
-    } else {
-      res.status(404).send('Board not found')
-    }
+    const id = parseInt(req.params.boardId)
+    try{
+        
+        const boards = await prisma.board.findUnique({
+          where: { id: parseInt(id)},
+          include: {
+            cards: true,
+          },
+        })
+        res.json(boards.cards)
+        } catch (error){
+
+        }
 })
-
-
 
 app.post('/boards', async (req, res) => {
   const { name, type, date } = req.body
@@ -46,6 +48,21 @@ app.post('/boards', async (req, res) => {
     }
   })
   res.json(newboard)
+})
+
+app.post('/boards/:boardId', async (req, res) => {
+  const { message, author, gif, votes, board_id } = req.body
+  const board_id_int = parseInt(board_id);
+  const newCard = await prisma.cards.create({
+    data: {
+      message,
+      author,
+      gif,
+      votes,
+      board_id: board_id_int
+    }
+  })
+  res.json(newCard)
 })
 
 app.put('/boards/:id', async (req, res) => {
