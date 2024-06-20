@@ -33,7 +33,8 @@ const Board = () => {
       return filteredBoards.map((board) => (
         <div key={board.card_id} className="board">
           <img src={board.gif} alt={board.name}/>
-          <h3>{board.message}</h3>
+          <h3>{board.title}</h3>
+          <p>{board.message}</p>
           <p>{board.author}</p>
 
           <button className="delete-card" onClick={() => deleteCard(board.id)}>

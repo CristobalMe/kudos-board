@@ -51,7 +51,7 @@ app.post('/boards', async (req, res) => {
 })
 
 app.post('/boards/:boardId', async (req, res) => {
-  const { message, author, gif, votes, board_id } = req.body
+  const { message, author, gif, votes, board_id, title} = req.body
   const board_id_int = parseInt(board_id);
   const newCard = await prisma.cards.create({
     data: {
@@ -59,7 +59,8 @@ app.post('/boards/:boardId', async (req, res) => {
       author,
       gif,
       votes,
-      board_id: board_id_int
+      board_id: board_id_int,
+      title
     }
   })
   res.json(newCard)
