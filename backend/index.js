@@ -10,10 +10,6 @@ const prisma = new PrismaClient()
 // Enable CORS for all routes
 app.use(cors())
 
-// let boards = [
-//     { id: 1, name: "board1", type: "Celebration"},
-//     { id: 2, name: "board2", type: "Celebration"}
-// ]
 
 app.use(express.json())
 
@@ -26,8 +22,9 @@ app.get('/boards', async (req, res) => {
   res.json(boards)
 })
 
-app.get('/boards/:boardId', (req, res) => {
+app.get('/boards/:boardId', async (req, res) => {
     const boardId = parseInt(req.params.boardId)
+    const boards = await prisma.board.findMany()
     const board = boards.find(board => board.id === boardId)
     
     if (board) {

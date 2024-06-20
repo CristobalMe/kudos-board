@@ -18,4 +18,14 @@ model Board {
   name  String
   type  String
   date  DateTime  @default(now())
+  cards Cards[]
+}
+
+model Cards {
+  id      Int     @id @default(autoincrement())
+  card    Board     @relation(fields: [id], references: [id])
+  message String
+  gif     String
+  author  String
+  votes   Int
 }

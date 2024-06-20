@@ -4,7 +4,7 @@ import axios from "axios";
 const NewBoardForm = ({ onSuccess, onClose }) => {
   const [newBoardName, setNewBoardName] = useState("");
   const [newBoardType, setNewBoardType] = useState("");
-  const types = ["Recent", "Celebration", "Thank you", "Inspiration"];
+  const types = ["Celebration", "Thank you", "Inspiration"];
 
   const createNewBoard = async () => {
     try {

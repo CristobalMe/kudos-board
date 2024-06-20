@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Filter from './Filter'
+import { Link } from "react-router-dom";
 import axios from "axios";
 import HandleNewBoard from './HandleNewBoard'
 
@@ -11,7 +12,7 @@ function HomePage() {
 
     useEffect(() => {
         fetchBoards();
-    }, []);
+    }, [boards]);
 
     const fetchBoards = () => {
         fetch('http://localhost:3000/boards')
@@ -32,9 +33,12 @@ function HomePage() {
         }
 
         if (CategoryFilter) {
-            filteredBoards = filteredBoards.filter(
-              (board) => board.type == CategoryFilter
-            );
+            if (CategoryFilter != "Recent"){
+              filteredBoards = filteredBoards.filter(
+                (board) => board.type == CategoryFilter
+              )} else {
+                filteredBoards.sort((a,b)=>a.date-b.date);
+              }
         }
     
         return filteredBoards.map((board) => (
@@ -42,6 +46,9 @@ function HomePage() {
             <img src={`https://picsum.photos/id/${board.id + 10}/200/300`} alt={board.name}/>
             <h3>{board.name}</h3>
             <p>{board.type}</p>
+            <Link to={`/boards/${board.id}`} className="enter-board">
+                View Board
+            </Link>
             <button className="delete-board" onClick={() => deleteBoard(board.id)}>
               Delete Board
             </button>
