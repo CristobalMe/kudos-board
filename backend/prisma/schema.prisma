@@ -29,4 +29,5 @@ model cards {
   author  String?
   votes   Int
   board_id Int?
+  title   String
 }

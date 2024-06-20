@@ -4,12 +4,13 @@ import axios from "axios";
 const NewCardForm = ({ onSuccess, onClose, path }) => {
   const [newCardMessage, setNewCardMessage] = useState("");
   const [newCardAuthor, setNewCardAuthor] = useState("");
+  const [newCardTitle, setNewCardTitle] = useState("");
   
   
 
   const createNewCard = async () => {
     try {
-      if (!newCardMessage || !newCardAuthor ) {
+      if (!newCardMessage || !newCardAuthor || !newCardTitle) {
         alert("Fill out all fields");
         return; 
       }
@@ -24,7 +25,8 @@ const NewCardForm = ({ onSuccess, onClose, path }) => {
         author: newCardAuthor,
         gif: "https://media0.giphy.com/media/aoxmfNwLnMNr7C0wEE/giphy-downsized.gif?cid=72ae070ckfn1zyn2fi35os1aiqrgpu022y7qvg5efsnh9n9g&ep=v1_gifs_search&rid=giphy-downsized.gif&ct=g",
         votes: 0,
-        board_id: cardId
+        board_id: cardId,
+        title: newCardTitle
       });
 
       onSuccess();
@@ -46,6 +48,14 @@ const NewCardForm = ({ onSuccess, onClose, path }) => {
         </button>
         <h2>Create a New Card</h2>
         <label>Title:</label>
+        <input
+          type="text"
+          value={newCardTitle}
+          onChange={(e) => setNewCardTitle(e.target.value)}
+          required
+        />
+
+        <label>Message:</label>
         <input
           type="text"
           value={newCardMessage}

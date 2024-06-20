@@ -16,6 +16,7 @@ CREATE TABLE "cards" (
     "author" TEXT,
     "votes" INTEGER NOT NULL,
     "board_id" INTEGER,
+    "title" TEXT NOT NULL,
 
     CONSTRAINT "cards_pkey" PRIMARY KEY ("card_id")
 );
