@@ -13,19 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Board {
+model board {
   id    Int     @id @default(autoincrement())
   name  String
   type  String
   date  DateTime  @default(now())
-  cards Cards[]
+  cards cards[]
 }
 
-model Cards {
-  id      Int     @id @default(autoincrement())
-  card    Board     @relation(fields: [id], references: [id])
+model cards {
+  card_id Int     @id @default(autoincrement())
+  board   board?   @relation(fields: [board_id], references: [id])
   message String
   gif     String
-  author  String
+  author  String?
   votes   Int
+  board_id Int?
 }
