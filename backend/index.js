@@ -99,20 +99,22 @@ app.delete('/boards/:id/cards/:cardId', async (req, res) => {
 
 
 app.patch('/boards/:id/cards/:cardId', (req, res) => {
-  const x = req.params.id
-  const y = req.params.cardId
-  const changes = req.body;
+  // let changes = req.body;
 
-  const originalInformation = req.body
-  // originalInformation will be {"x": 1, "y": 2, "painted": false }
+  // let modifiedInformation = req.body
 
-  let modifiedInformation = originalInformation
   
-  modifiedInformation.votes = parseInt(changes.votes) + 1 // Updates new information with desired changes
-  
-  // Other possible changes like changes.x or changes.y
+  // modifiedInformation.votes = parseInt(changes.votes) + 1 
+  // console.log(modifiedInformation )
+  // res.json(modifiedInformation); 
 
-  res.send(modifiedInformation); // Returns modified information back to user
+
+  votes = req.body.votes
+  console.log(votes)
+  res.json({votes: votes+1});
+  
+
+
 })
 
 
