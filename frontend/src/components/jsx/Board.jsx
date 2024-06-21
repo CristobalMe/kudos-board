@@ -62,7 +62,7 @@ const Board = () => {
 
   const deleteCard = async (cardId) => {
     try {
-      const response = await fetch(`http://localhost:3000${current_link}/${cardId}`, {
+      const response = await fetch(`https://kudos-board-68oe.onrender.com${current_link}/${cardId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const Board = () => {
     
     votes = parseInt(votes)
     try {
-      await axios.patch(`http://localhost:3000${current_link}/${cardId}`, {
+      await axios.patch(`https://kudos-board-68oe.onrender.com${current_link}/${cardId}`, {
         votes: votes
       });
 
