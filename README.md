@@ -48,9 +48,10 @@ Deployed Application (optional): [Kudos Board Deployed Site](ADD_LINK_HERE)
 
 ### Walkthrough Video
 
-`TODO://` Add the embedded URL code to your animated app walkthrough below, `ADD_EMBEDDED_CODE_HERE`. Make sure the video or gif actually renders and animates when viewing this README. (🚫 Remove this paragraph after adding walkthrough video)
+https://github.com/CristobalMe/kudos-board/assets/112215849/e6b70d9c-9acf-4776-8ba5-4884c03386be
 
-`ADD_EMBEDDED_CODE_HERE`
+
+
 
 ### Reflection
 
