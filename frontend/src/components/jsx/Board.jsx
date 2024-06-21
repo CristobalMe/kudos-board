@@ -15,7 +15,7 @@ const Board = () => {
 
 
     const fetchCards = () => {
-        fetch(`http://localhost:3000${current_link}`)
+        fetch(`https://kudos-board-68oe.onrender.com${current_link}`)
             .then(response => response.json())
             .then(data => setCards(data))
             .catch(error => console.error('Error fetching:', error))
