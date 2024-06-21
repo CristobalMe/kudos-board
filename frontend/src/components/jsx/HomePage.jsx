@@ -15,7 +15,7 @@ function HomePage() {
     }, [boards]);
 
     const fetchBoards = () => {
-        fetch('http://localhost:3000/boards')
+        fetch('https://kudos-board-68oe.onrender.com/boards')
             .then(response => response.json())
             .then(data => setBoards(data))
             .catch(error => console.error('Error fetching:', error))
@@ -60,7 +60,7 @@ function HomePage() {
 
     const deleteBoard = async (boardId) => {
         try {
-          const response = await fetch(`http://localhost:3000/boards/${boardId}`, {
+          const response = await fetch(`https://kudos-board-68oe.onrender.com/boards/${boardId}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
