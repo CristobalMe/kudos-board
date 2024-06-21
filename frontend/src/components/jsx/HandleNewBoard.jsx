@@ -12,7 +12,7 @@ const NewBoardForm = ({ onSuccess, onClose }) => {
         alert("Fill out all fields");
         return; 
       }
-      await axios.post("http://localhost:3000/boards", {
+      await axios.post("https://kudos-board-68oe.onrender.com/boards", {
         name: newBoardName,
         type: newBoardType,
       });
