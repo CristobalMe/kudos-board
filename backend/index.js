@@ -98,23 +98,21 @@ app.delete('/boards/:id/cards/:cardId', async (req, res) => {
 
 
 
-app.patch('/boards/:id/cards/:cardId', (req, res) => {
-  // let changes = req.body;
+app.patch('/boards/:id/cards/:cardId', async (req, res) => {
+  let changes = parseInt(req.body.votes) + 1;
+  const { id, cardId } = req.params
+  let cardId_Int = parseInt(cardId)
 
-  // let modifiedInformation = req.body
+  const votes = await prisma.cards.update({
+    where: {
+      card_id: cardId_Int,
+    },
+    data: {
+      votes: changes,
+    },
+  })
 
-  
-  // modifiedInformation.votes = parseInt(changes.votes) + 1 
-  // console.log(modifiedInformation )
-  // res.json(modifiedInformation); 
-
-
-  votes = req.body.votes
-  console.log(votes)
-  res.json({votes: votes+1});
-  
-
-
+  res.json({votes: votes});
 })
 
 

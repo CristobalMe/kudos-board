@@ -5,17 +5,17 @@ import { Link } from "react-router-dom";
 import '../css/Board.css'
 
 const Board = () => {
-    const protocol = window.location.pathname;
+    const current_link = window.location.pathname;
     const [Form, setForm] = useState(false);
     const [cards, setCards] = useState([]);
 
     useEffect(() => {
       fetchCards();
-    }, []);
+    }, [cards]);
 
 
     const fetchCards = () => {
-        fetch(`http://localhost:3000${protocol}`)
+        fetch(`http://localhost:3000${current_link}`)
             .then(response => response.json())
             .then(data => setCards(data))
             .catch(error => console.error('Error fetching:', error))
@@ -49,7 +49,7 @@ const Board = () => {
           </div>
 
           <div>
-            <button className="button-card" onClick={() => likeCard(board.card_id)}>
+            <button className="button-card" onClick={() => likeCard(board.card_id, board.votes)}>
               Like Card: {board.votes}
             </button>
             <button className="button-card" onClick={() => deleteCard(board.card_id)}>
@@ -62,7 +62,7 @@ const Board = () => {
 
   const deleteCard = async (cardId) => {
     try {
-      const response = await fetch(`http://localhost:3000${protocol}/${cardId}`, {
+      const response = await fetch(`http://localhost:3000${current_link}/${cardId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -81,11 +81,14 @@ const Board = () => {
 
 
   const likeCard = async (cardId, votes) => {
-    votes = parseInt(votes) + 1;
+    
+    votes = parseInt(votes)
     try {
-      await axios.patch(`http://localhost:3000${protocol}/${cardId}`, {
-       votes: votes
+      await axios.patch(`http://localhost:3000${current_link}/${cardId}`, {
+        votes: votes
       });
+
+      renderCards();
 
     } catch (error) {
       console.error("Error:", error);
@@ -106,7 +109,7 @@ const Board = () => {
               Create a New Card
           </button>
         </div>
-        {Form && (<HandleNewCard onSuccess={createCard} onClose={toggleForm} path={protocol}/>)}
+        {Form && (<HandleNewCard onSuccess={createCard} onClose={toggleForm} path={current_link}/>)}
         
 
         <section className="board-grid">{renderCards()}</section>
