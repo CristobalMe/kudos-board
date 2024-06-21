@@ -48,7 +48,7 @@ const NewCardForm = ({ onSuccess, onClose, path }) => {
       console.log(cardId)
 
 
-      await axios.post(`http://localhost:3000${path}`, {
+      await axios.post(`https://kudos-board-68oe.onrender.com${path}`, {
         message: newCardMessage,
         author: newCardAuthor,
         gif: gif,
