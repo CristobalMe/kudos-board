@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Filter from './Filter'
 import { Link } from "react-router-dom";
-import axios from "axios";
 import HandleNewBoard from './HandleNewBoard'
+import '../css/HomePage.css'
 
 function HomePage() {
     const [boards, setBoards] = useState([]);
@@ -44,12 +44,14 @@ function HomePage() {
         return filteredBoards.map((board) => (
           <div key={board.id} className="board">
             <img src={`https://picsum.photos/id/${board.id + 10}/200/300`} alt={board.name}/>
-            <h3>{board.name}</h3>
-            <p>{board.type}</p>
-            <Link to={`/boards/${board.id}`} className="enter-board">
+            <div className="text">
+              <h3>{board.name}</h3>
+              <p>{board.type}</p>
+            </div>
+            <Link to={`/boards/${board.id}/cards`} className="enter-board">
                 View Board
             </Link>
-            <button className="delete-board" onClick={() => deleteBoard(board.id)}>
+            <button className="enter-board" onClick={() => deleteBoard(board.id)}>
               Delete Board
             </button>
           </div>
@@ -103,16 +105,25 @@ function HomePage() {
             </header>
 
             <Filter setCategoryFilter={setCategoryFilter} />
+            <div className="New_Board">
+              <button onClick={toggleForm} className="button">
+                  Create a New Board
+              </button>
+            </div>
+            <div className="New_Board">
+              {Form && (<HandleNewBoard onSuccess={createBoard} onClose={toggleForm} />)}
+            </div>
+                   
 
+            <div className="grid">
+              <section className="board-grid">{renderBoards()}</section>
+            </div>
 
-            <div>
-                <button onClick={toggleForm}>
-                    Create a New Board
-                </button>
-                {Form && (<HandleNewBoard onSuccess={createBoard} onClose={toggleForm} />)}
-            </div>            
-
-            <section className="board-grid">{renderBoards()}</section>
+            <footer>
+              <p>Author: Cristobal Medina Meza</p>
+              <p>About: Meta U week 2 project</p>
+              <p><a href="cristobalmedina2004@gmail.com" className="mail">cristobalmedina2004@gmail.com</a></p>
+            </footer>
         </div>
     )
 }

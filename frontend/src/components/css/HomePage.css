@@ -1,0 +1,36 @@
+.New_Board{
+    display: flex;
+    justify-content: center;
+}
+
+.grid{
+    display: grid;
+}
+
+
+.board{
+    background-color: #688ab7;
+    border-radius: 8px;
+    max-width: 250px;
+    min-height: 200px;
+    max-height: 500px;
+    box-shadow: 0 14px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: auto;
+}
+
+footer {
+  background-color: #033E8C;
+  font-family: Tahoma, Verdana, sans-serif;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 1px black;
+  color: #ffffff;
+  padding: 20px;
+}
+
+.mail{
+    color: #ffffff;
+}
