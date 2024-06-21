@@ -1,10 +1,38 @@
 import React, { useState } from "react";
 import axios from "axios";
+import '../css/HandleNewCard.css'
 
 const NewCardForm = ({ onSuccess, onClose, path }) => {
   const [newCardMessage, setNewCardMessage] = useState("");
   const [newCardAuthor, setNewCardAuthor] = useState("");
   const [newCardTitle, setNewCardTitle] = useState("");
+  const [gif, setGif] = useState("");
+  const [gifOptions, setGifOptions] = useState([]);
+
+  const apiKey = "EmBirGHuFtC0BpEYiq10HgseSHxAXC1s";
+
+    const searchGifs = async () => {
+      try {
+        const response = await axios.get("https://api.giphy.com/v1/gifs/search", {
+          params: {
+            api_key: apiKey,
+            q: gif,
+            limit: 4,
+          },
+        });
+  
+        const gifData = response.data.data;
+        const gifUrls = gifData.map((gif) => gif.images.original.url);
+        setGifOptions(gifUrls);
+      } catch (error) {
+        console.error("Error searching for GIFs:", error);
+      }
+    };
+
+    const handleSelectGif = (gifUrl) => {
+      setGif(gifUrl);
+      setGifOptions([]);
+    };
   
   
 
@@ -23,7 +51,7 @@ const NewCardForm = ({ onSuccess, onClose, path }) => {
       await axios.post(`http://localhost:3000${path}`, {
         message: newCardMessage,
         author: newCardAuthor,
-        gif: "https://media0.giphy.com/media/aoxmfNwLnMNr7C0wEE/giphy-downsized.gif?cid=72ae070ckfn1zyn2fi35os1aiqrgpu022y7qvg5efsnh9n9g&ep=v1_gifs_search&rid=giphy-downsized.gif&ct=g",
+        gif: gif,
         votes: 0,
         board_id: cardId,
         title: newCardTitle
@@ -70,6 +98,32 @@ const NewCardForm = ({ onSuccess, onClose, path }) => {
           onChange={(e) => setNewCardAuthor(e.target.value)}
           required
         />
+
+        <input
+          type="text"
+          placeholder="Search GIFs"
+          value={gif}
+          onChange={(e) => setGif(e.target.value)}
+        />
+        <button className="search-button" type="search" onClick={searchGifs}>
+          Search
+        </button>
+        {gifOptions.length > 0 && (
+          <div className="gif-options">
+            {gifOptions.map((gifUrl) => (
+              <div className="gif-container">
+                <img
+                  className="gif"
+                  key={gifUrl}
+                  src={gifUrl}
+                  alt="GIF"
+                  onClick={() => handleSelectGif(gifUrl)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        
         
 
         

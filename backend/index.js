@@ -22,7 +22,7 @@ app.get('/boards', async (req, res) => {
   res.json(boards)
 })
 
-app.get('/boards/:boardId', async (req, res) => {
+app.get('/boards/:boardId/cards', async (req, res) => {
     const id = parseInt(req.params.boardId)
     try{
         
@@ -50,7 +50,7 @@ app.post('/boards', async (req, res) => {
   res.json(newboard)
 })
 
-app.post('/boards/:boardId', async (req, res) => {
+app.post('/boards/:boardId/cards', async (req, res) => {
   const { message, author, gif, votes, board_id, title} = req.body
   const board_id_int = parseInt(board_id);
   const newCard = await prisma.cards.create({
@@ -86,6 +86,33 @@ app.delete('/boards/:id', async (req, res) => {
     where: { id: parseInt(id) }
   })
   res.json(deletedboard)
+})
+
+app.delete('/boards/:id/cards/:cardId', async (req, res) => {
+  const { id, cardId} = req.params
+  const deletedcard = await prisma.cards.delete({
+    where: { board_id: parseInt(id), card_id: parseInt(cardId) }
+  })
+  res.json(deletedcard)
+})
+
+
+
+app.patch('/boards/:id/cards/:cardId', (req, res) => {
+  const x = req.params.id
+  const y = req.params.cardId
+  const changes = req.body;
+
+  const originalInformation = req.body
+  // originalInformation will be {"x": 1, "y": 2, "painted": false }
+
+  let modifiedInformation = originalInformation
+  
+  modifiedInformation.votes = parseInt(changes.votes) + 1 // Updates new information with desired changes
+  
+  // Other possible changes like changes.x or changes.y
+
+  res.send(modifiedInformation); // Returns modified information back to user
 })
 
 
